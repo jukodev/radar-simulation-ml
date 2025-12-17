@@ -1,11 +1,18 @@
 import time
+from pathlib import Path
+
 import torch
+import torch.nn as nn
 import torch.optim as optim
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torch.utils.data import Dataset, DataLoader, random_split
 from torch.nn.utils.rnn import pad_sequence, pack_padded_sequence, pad_packed_sequence
-from concurrent.futures import ProcessPoolExecutor, as_completed
-import torch.nn as nn
+
+# Paths
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+DATA_DIR = PROJECT_ROOT / "data"
+MODELS_DIR = PROJECT_ROOT / "models"
+
 
 class TrajectoryDataset(torch.utils.data.Dataset):
     def __init__(self, pt_path: str):
@@ -60,7 +67,7 @@ def masked_mse(pred, target, mask):
 def train_one(cfg: dict):
 
     device = "cpu"
-    ds = TrajectoryDataset("flight_data.pt")
+    ds = TrajectoryDataset(DATA_DIR / "flight_data.pt")
 
     # optional: reproducible split
     g = torch.Generator().manual_seed(cfg.get("seed", 0))
@@ -120,12 +127,11 @@ def train_one(cfg: dict):
         current_lr = opt.param_groups[0]['lr']
         print(f"Epoch {epoch:02d} | Train Loss: {train_loss:.6f} | Validation Loss: {val_loss:.6f} | LR: {current_lr:.2e} | Time: {duration / 60:.2f}mins")
 
-        # Step the scheduler based on validation loss
         scheduler.step(val_loss)
 
         if val_loss < best_val:
             best_val = val_loss
-            torch.save(model.state_dict(), f"nextstep_{cfg['name']}_best.pt")
+            torch.save(model.state_dict(), MODELS_DIR / f"nextstep_{cfg['name']}_best.pt")
             best_epoch = epoch
 
         if epoch - best_epoch >= 20:

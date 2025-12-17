@@ -1,8 +1,16 @@
+import sys
+from pathlib import Path
+
+# Add project root to path for imports
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 import torch
-import train_lstm
-import custom_codecs
+from training import train_lstm
+from tools import custom_codecs
 
+# Paths
+MODELS_DIR = PROJECT_ROOT / "models"
 
 
 @torch.no_grad()
@@ -33,7 +41,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 cfg = {"name": "h128_lr1e-3", "hidden_size": 128, "num_layers": 2, "dropout": 0.1, "lr": 1e-3, "wd": 1e-4,
          "batch_size": 64, "epochs": 30, "threads": 2, "seed": 1}
 loaded_model = train_lstm.NextStepLSTM(hidden_size=cfg["hidden_size"], num_layers=cfg["num_layers"], dropout=cfg["dropout"])
-loaded_model.load_state_dict(torch.load('nextstep_h128_lr1e-3_best.pt', map_location=device))
+loaded_model.load_state_dict(torch.load(MODELS_DIR / 'nextstep_h128_lr1e-3_best.pt', map_location=device))
 loaded_model.to(device)
 
 (x,y,vx,vy,fl) = custom_codecs.encode_flightpoint(97, 309, .12, 0, 1020)

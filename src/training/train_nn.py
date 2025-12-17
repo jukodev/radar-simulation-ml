@@ -1,6 +1,14 @@
+import time
+from pathlib import Path
+
 import torch
 
-data = torch.load("flight_data.pt")
+# Paths
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+DATA_DIR = PROJECT_ROOT / "data"
+MODELS_DIR = PROJECT_ROOT / "models"
+
+data = torch.load(DATA_DIR / "flight_data.pt")
 
 X = data["X"]
 y = data["y"]
@@ -62,7 +70,10 @@ optimizer = optim.Adam(model.parameters(), lr=1e-3)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.to(device)
 
-num_epochs = 20
+num_epochs = 200
+best_val = float('inf')
+best_epoch = -1
+start_time = time.time()
 
 for epoch in range(num_epochs):
     model.train()
@@ -103,6 +114,14 @@ for epoch in range(num_epochs):
 
     print(f"Epoch {epoch+1}/{num_epochs} "
           f"- Train Loss: {avg_train_loss:.4f} "
-          f"- Val Loss: {avg_val_loss:.4f}")
+          f"- Val Loss: {avg_val_loss:.4f}"
+          f" - Time Elapsed: {(time.time() - start_time)/60:.2f} mins")
+    
+    if avg_val_loss < best_val:
+        best_val = avg_val_loss
+        best_epoch = epoch
+        torch.save(model.state_dict(), MODELS_DIR / "movement_predictor_best.pt")
 
-torch.save(model.state_dict(), 'model.pt')
+    start_time = time.time()
+
+torch.save(model.state_dict(), MODELS_DIR / 'model.pt')

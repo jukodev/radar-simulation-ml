@@ -1,8 +1,15 @@
+from pathlib import Path
+
 import torch
 import torch.nn as nn
 import numpy as np
 
+# Paths
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+MODELS_DIR = PROJECT_ROOT / "models"
+
 np.set_printoptions(suppress=True, precision=4)
+
 
 class MovementPredictor(nn.Module):
     def __init__(self):
@@ -52,7 +59,7 @@ def rollout_until_threshold(model, start_point, first_dim_threshold=5.0, max_ste
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 loaded_model = MovementPredictor()
-loaded_model.load_state_dict(torch.load('model.pt', map_location=device))
+loaded_model.load_state_dict(torch.load(MODELS_DIR / 'model.pt', map_location=device))
 loaded_model.to(device)
 loaded_model.eval()
 

@@ -12,15 +12,19 @@ Result is saved as flight_data.pt
 """
 
 import sqlite3
-import math
-import statistics
+from pathlib import Path
 from typing import Dict, List, Tuple
-import custom_codecs
 
 import torch
 
-DB_PATH = "backup-17.12.2025.db"
-SAVE_PATH = "flight_data.pt"   
+import custom_codecs
+
+# Paths
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+DATA_DIR = PROJECT_ROOT / "data"
+
+DB_PATH = DATA_DIR / "backup-17.12.2025.db"
+SAVE_PATH = DATA_DIR / "flight_data.pt"
 MIN_POINTS_PER_TRAJ = 50           
 
 def load_trajectories_from_db(

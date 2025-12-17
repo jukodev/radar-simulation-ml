@@ -1,7 +1,19 @@
+import sys
+from pathlib import Path
+
+# Add project root to path for imports
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+sys.path.insert(0, str(PROJECT_ROOT / "src"))
+
 import torch
 import torch.nn as nn
 import numpy as np
-import custom_codecs
+from tools import custom_codecs
+
+# Paths
+MODELS_DIR = PROJECT_ROOT / "models"
+
+
 class MovementPredictor(nn.Module):
     def __init__(self):
         super().__init__()
@@ -60,7 +72,7 @@ def rollout_until_threshold(model, start_point, max_steps=1000):
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 loaded_model = MovementPredictor()
-loaded_model.load_state_dict(torch.load('model.pt', map_location=device))
+loaded_model.load_state_dict(torch.load(MODELS_DIR / 'model.pt', map_location=device))
 loaded_model.to(device)
 loaded_model.eval()
 
