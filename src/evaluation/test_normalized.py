@@ -1,7 +1,6 @@
 import sys
 from pathlib import Path
 
-# Add project root to path for imports
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
@@ -10,7 +9,6 @@ import torch.nn as nn
 import numpy as np
 from tools import custom_codecs
 
-# Paths
 MODELS_DIR = PROJECT_ROOT / "models"
 
 

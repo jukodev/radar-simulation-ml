@@ -8,7 +8,6 @@ from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torch.utils.data import Dataset, DataLoader, random_split
 from torch.nn.utils.rnn import pad_sequence, pack_padded_sequence, pad_packed_sequence
 
-# Paths
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
 MODELS_DIR = PROJECT_ROOT / "models"

@@ -3,7 +3,6 @@ from pathlib import Path
 
 import torch
 
-# Paths
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
 MODELS_DIR = PROJECT_ROOT / "models"
@@ -15,7 +14,6 @@ y = data["y"]
 
 N = 12577
 
-# Simple split
 train_ratio = 0.8
 n_train = int(N * train_ratio)
 

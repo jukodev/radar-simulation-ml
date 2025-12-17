@@ -4,7 +4,6 @@ import torch
 import torch.nn as nn
 import numpy as np
 
-# Paths
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 MODELS_DIR = PROJECT_ROOT / "models"
 
