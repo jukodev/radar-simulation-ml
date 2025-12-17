@@ -2,20 +2,22 @@ import math
 import statistics
 from typing import Tuple
 
-# Values saved from previous calculation, for set of 18861 trajectories
-FL_MEAN = 473.93616315184147
-FL_STDEV = 319.90238842157635
+# Values saved from previous calculation, for set of 14153 (arrival) trajectories
+FL_MEAN = 473.28619161149226
+FL_STDEV = 320.4827143599288
 
-VX_MEAN = -0.002095183304311573
-VX_STDEV = 0.0574749377907955
+VX_MEAN = -0.0023167938295387937
+VX_STDEV = 0.05748724375132831
 
-VY_MEAN = 0.00561096691598208
-VY_STDEV = 0.06425699715580237
+VY_MEAN = 0.005649544455156775
+VY_STDEV = 0.06420043096800396
 
-X_MEAN = 0.0
-X_STDEV = 50.0
-Y_MEAN = 0.0
-Y_STDEV = 50.0
+X_MEAN = 2.690441811206137
+X_STDEV = 29.354374834158676
+Y_MEAN = -0.648125082596253
+Y_STDEV = 32.857991991300764
+
+NUM_TRAJ = 14153
 
 def calulate_cartesian(rho: float, theta: float)-> Tuple[float, float]:
     """

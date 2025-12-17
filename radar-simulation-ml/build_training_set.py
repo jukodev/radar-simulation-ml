@@ -19,7 +19,7 @@ import custom_codecs
 
 import torch
 
-DB_PATH = "backup-10.12.2025.db"
+DB_PATH = "backup-17.12.2025.db"
 SAVE_PATH = "flight_data.pt"   
 MIN_POINTS_PER_TRAJ = 50           
 
