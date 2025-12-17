@@ -1,6 +1,7 @@
 import time
 import torch
 import torch.optim as optim
+from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torch.utils.data import Dataset, DataLoader, random_split
 from torch.nn.utils.rnn import pad_sequence, pack_padded_sequence, pad_packed_sequence
 from concurrent.futures import ProcessPoolExecutor, as_completed
@@ -76,8 +77,10 @@ def train_one(cfg: dict):
 
     model = NextStepLSTM(hidden_size=cfg["hidden_size"], num_layers=cfg["num_layers"], dropout=cfg["dropout"]).to(device)
     opt = optim.AdamW(model.parameters(), lr=cfg["lr"], weight_decay=cfg["wd"])
+    scheduler = ReduceLROnPlateau(opt, mode='min', factor=0.5, patience=5)
 
     best_val = float("inf")
+    best_epoch = -1
     last_time = time.time()
     for epoch in range(1, cfg["epochs"] + 1):
         model.train()
@@ -114,22 +117,31 @@ def train_one(cfg: dict):
         duration = time.time() - last_time
         last_time = time.time()
 
-        print(f"Epoch {epoch:02d} | Train Loss: {train_loss:.6f} | Validation Loss: {val_loss:.6f} | Time: {duration / 60}mins")
+        current_lr = opt.param_groups[0]['lr']
+        print(f"Epoch {epoch:02d} | Train Loss: {train_loss:.6f} | Validation Loss: {val_loss:.6f} | LR: {current_lr:.2e} | Time: {duration / 60:.2f}mins")
+
+        # Step the scheduler based on validation loss
+        scheduler.step(val_loss)
 
         if val_loss < best_val:
             best_val = val_loss
             torch.save(model.state_dict(), f"nextstep_{cfg['name']}_best.pt")
+            best_epoch = epoch
+
+        if epoch - best_epoch >= 20:
+            print(f"Early stopping triggered at epoch {epoch}. Best was epoch {best_epoch} with val loss {best_val:.6f}.")
+            break
 
     return cfg["name"], best_val
 
 def run_sweep():
-    cfg ={"name": "h128_lr1e-3", "hidden_size": 128, "num_layers": 2, "dropout": 0.1, "lr": 1e-3, "wd": 1e-4,
+    cfg ={"name": "h160_lr1e-3", "hidden_size": 160, "num_layers": 2, "dropout": 0.1, "lr": 1e-3, "wd": 1e-4,
          "batch_size": 64, "epochs": 100, "seed": 1}
 
     print("Starting "+cfg["name"])
     (name, best) = train_one(cfg)
 
-    print("Best: "+best)
+    print("Best: "+str(best))
 
 if __name__ == "__main__":
     run_sweep()

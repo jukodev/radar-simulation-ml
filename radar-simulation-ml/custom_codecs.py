@@ -12,7 +12,10 @@ VX_STDEV = 0.0574749377907955
 VY_MEAN = 0.00561096691598208
 VY_STDEV = 0.06425699715580237
 
-RHO_MAX = 100
+X_MEAN = 0.0
+X_STDEV = 50.0
+Y_MEAN = 0.0
+Y_STDEV = 50.0
 
 def calulate_cartesian(rho: float, theta: float)-> Tuple[float, float]:
     """
@@ -55,8 +58,9 @@ def encode_flightpoint(rho: float, theta: float, speed: float, heading: float, f
     (x,y) = calulate_cartesian(rho, theta)
     (vx, vy) = calulate_cartesian(speed, heading)
 
-    x_std = x / RHO_MAX
-    y_std = y / RHO_MAX
+    # Use z-score standardization for all features (consistent scaling)
+    x_std = float(x - X_MEAN) / X_STDEV
+    y_std = float(y - Y_MEAN) / Y_STDEV
 
     vx_std = float(vx - VX_MEAN) / VX_STDEV
     vy_std = float(vy - VY_MEAN) / VY_STDEV
@@ -76,8 +80,8 @@ def decode_flightpoint(
     Denormalizes and destandardizes the encoded flightpoint back to
     (rho, theta, speed, heading, fl).
     """
-    x = x_std * RHO_MAX
-    y = y_std * RHO_MAX
+    x = x_std * X_STDEV + X_MEAN
+    y = y_std * Y_STDEV + Y_MEAN
 
     vx = vx_std * VX_STDEV + VX_MEAN
     vy = vy_std * VY_STDEV + VY_MEAN
@@ -94,13 +98,15 @@ def decode_flightpoint(
 
 
 
-def print_mean_and_stdev(rows: list[float]) -> None:
+def print_mean_and_stdev(rows: list[tuple]) -> None:
     """
     Calulates and prints mean and standard deviation for all relevant metrics.
     Run and update once when changing base dataset.
     :param rows: List of db flightpath entries
-    :type rows: list[float]
+    :type rows: list[tuple]
     """
+    x_values = []
+    y_values = []
     fl_values = []
     vx_values = []
     vy_values = []
@@ -109,13 +115,25 @@ def print_mean_and_stdev(rows: list[float]) -> None:
         if None in (rho, theta, speed, heading, fl):
             continue
 
+        theta_rad = math.radians(theta)
+        x = rho * math.cos(theta_rad)
+        y = rho * math.sin(theta_rad)
+
         heading_rad = math.radians(heading)
         x_vel = speed * math.cos(heading_rad)
         y_vel = speed * math.sin(heading_rad)
 
+        x_values.append(x)
+        y_values.append(y)
         fl_values.append(fl)
         vx_values.append(x_vel)
         vy_values.append(y_vel)
+
+    x_mean = statistics.mean(x_values)
+    x_stdev = statistics.stdev(x_values)
+
+    y_mean = statistics.mean(y_values)
+    y_stdev = statistics.stdev(y_values)
 
     fl_mean = statistics.mean(fl_values)
     fl_stdev = statistics.stdev(fl_values)
@@ -126,6 +144,8 @@ def print_mean_and_stdev(rows: list[float]) -> None:
     vy_mean = statistics.mean(vy_values)
     vy_stdev = statistics.stdev(vy_values)
 
+    print("x mean:", x_mean, "x dev:", x_stdev)
+    print("y mean:", y_mean, "y dev:", y_stdev)
     print("fl mean:", fl_mean, "fl dev:", fl_stdev)
     print("vx mean:", vx_mean, "vx dev:", vx_stdev)
     print("vy mean:", vy_mean, "vy dev:", vy_stdev)
