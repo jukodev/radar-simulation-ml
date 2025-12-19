@@ -36,19 +36,30 @@ def generate_from_first(model, first_point, steps=200, device="cpu"):
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-cfg = {"name": "h128_lr1e-3", "hidden_size": 128, "num_layers": 2, "dropout": 0.1, "lr": 1e-3, "wd": 1e-4,
-         "batch_size": 64, "epochs": 30, "threads": 2, "seed": 1}
+cfg = {
+        "name": "h200_lr1e-3",
+        "hidden_size": 200,
+        "num_layers": 2,
+        "dropout": 0,
+        "lr": 1e-3,
+        "wd": 1e-4,
+        "batch_size": 64,
+        "epochs": 2000,
+        "seed": 1
+    }
 loaded_model = train_lstm.NextStepLSTM(hidden_size=cfg["hidden_size"], num_layers=cfg["num_layers"], dropout=cfg["dropout"])
-loaded_model.load_state_dict(torch.load(MODELS_DIR / 'nextstep_h128_lr1e-3_best.pt', map_location=device))
+loaded_model.load_state_dict(torch.load(MODELS_DIR / 'nextstep_h200_l2_d0_best.pt', map_location=device))
 loaded_model.to(device)
 
-(x,y,vx,vy,fl) = custom_codecs.encode_flightpoint(97, 309, .12, 0, 1020)
+(x,y,vx,vy,fl) = custom_codecs.encode_flightpoint(97, 309, .12, 126, 1020)
 
 current_point = torch.tensor([x, y, vx, vy, fl], dtype=torch.float32)
 
-seq = generate_from_first(loaded_model, current_point, 250, device)
+seq = generate_from_first(loaded_model, current_point, 350, device)
 print(seq.shape)
 
 for i in range(250):
-    x,y,vx,vy,fl = seq[i].tolist()
-    print(str(x*100)+","+str(y*100))
+    x1,y1,vx1,vy1,fl1 = seq[i].tolist()
+    x,y,vx,vy,fl = custom_codecs.decode_flightpoint(x1, y1, vx1, vy1, fl1)
+    #print(str(x)+","+str(y))
+    print(fl)
