@@ -60,6 +60,6 @@ print(seq.shape)
 
 for i in range(250):
     x1,y1,vx1,vy1,fl1 = seq[i].tolist()
-    x,y,vx,vy,fl = custom_codecs.decode_flightpoint(x1, y1, vx1, vy1, fl1)
+    rho,theta,speed,heading,fl = custom_codecs.decode_flightpoint(x1, y1, vx1, vy1, fl1)
     #print(str(x)+","+str(y))
     print(fl)
