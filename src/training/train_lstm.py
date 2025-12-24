@@ -74,7 +74,7 @@ def train_one(cfg: dict):
     if device.type == "cuda":
         print("GPU:", torch.cuda.get_device_name(0))
 
-    ds = TrajectoryDataset(DATA_DIR / "flight_data.pt")
+    ds = TrajectoryDataset(str(DATA_DIR / "flight_data.pt"))
 
     g = torch.Generator().manual_seed(cfg.get("seed", 0))
     n = len(ds)
