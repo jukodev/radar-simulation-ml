@@ -179,15 +179,15 @@ def train_one(cfg: dict):
 
 def run_sweep():
     cfg = {
-        "name": "h420_l2_d0",
-        "hidden_size": 420,
+        "name": "h410_l2_d0",
+        "hidden_size": 410,
         "num_layers": 2,
         "dropout": 0,
         "lr": 1e-3,
         "wd": 1e-4,
         "batch_size": 64,
         "epochs": 2000,
-        "seed": 2
+        "seed": 1
     }
 
     print("Starting " + cfg["name"])

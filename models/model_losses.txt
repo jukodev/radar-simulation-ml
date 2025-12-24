@@ -903,3 +903,100 @@ Epoch 138 | Train Loss: 0.000731 | Validation Loss: 0.001113 | LR: 7.81e-06 | Ti
 Epoch 139 | Train Loss: 0.000731 | Validation Loss: 0.001114 | LR: 7.81e-06 | Time: 0.23mins
 Early stopping triggered at epoch 139. Best was epoch 119 with val loss 0.001112.
 Best: 0.0011117304093204439
+
+
+Starting h410_l2_d0
+Using device: cuda
+GPU: AMD Radeon RX 6950 XT
+Epoch 01 | Train Loss: 0.064306 | Validation Loss: 0.011122 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 02 | Train Loss: 0.007112 | Validation Loss: 0.004412 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 03 | Train Loss: 0.003221 | Validation Loss: 0.002641 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 04 | Train Loss: 0.002304 | Validation Loss: 0.002250 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 05 | Train Loss: 0.002083 | Validation Loss: 0.002045 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 06 | Train Loss: 0.001976 | Validation Loss: 0.001957 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 07 | Train Loss: 0.001922 | Validation Loss: 0.001901 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 08 | Train Loss: 0.001877 | Validation Loss: 0.001901 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 09 | Train Loss: 0.001895 | Validation Loss: 0.001832 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 10 | Train Loss: 0.001829 | Validation Loss: 0.001821 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 11 | Train Loss: 0.001823 | Validation Loss: 0.001787 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 12 | Train Loss: 0.001814 | Validation Loss: 0.001829 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 13 | Train Loss: 0.001792 | Validation Loss: 0.001792 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 14 | Train Loss: 0.001765 | Validation Loss: 0.001787 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 15 | Train Loss: 0.001751 | Validation Loss: 0.001718 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 16 | Train Loss: 0.001731 | Validation Loss: 0.001711 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 17 | Train Loss: 0.001773 | Validation Loss: 0.001716 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 18 | Train Loss: 0.001717 | Validation Loss: 0.001679 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 19 | Train Loss: 0.001682 | Validation Loss: 0.001679 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 20 | Train Loss: 0.001682 | Validation Loss: 0.001710 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 21 | Train Loss: 0.001656 | Validation Loss: 0.001804 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 22 | Train Loss: 0.001691 | Validation Loss: 0.001649 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 23 | Train Loss: 0.001615 | Validation Loss: 0.001625 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 24 | Train Loss: 0.001602 | Validation Loss: 0.001638 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 25 | Train Loss: 0.001584 | Validation Loss: 0.001595 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 26 | Train Loss: 0.001596 | Validation Loss: 0.001598 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 27 | Train Loss: 0.001593 | Validation Loss: 0.001642 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 28 | Train Loss: 0.001663 | Validation Loss: 0.001555 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 29 | Train Loss: 0.001534 | Validation Loss: 0.001555 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 30 | Train Loss: 0.001527 | Validation Loss: 0.001589 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 31 | Train Loss: 0.001532 | Validation Loss: 0.001750 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 32 | Train Loss: 0.001571 | Validation Loss: 0.001850 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 33 | Train Loss: 0.001537 | Validation Loss: 0.001504 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 34 | Train Loss: 0.001487 | Validation Loss: 0.001606 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 35 | Train Loss: 0.001507 | Validation Loss: 0.001504 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 36 | Train Loss: 0.001503 | Validation Loss: 0.001506 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 37 | Train Loss: 0.001460 | Validation Loss: 0.001470 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 38 | Train Loss: 0.001473 | Validation Loss: 0.001427 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 39 | Train Loss: 0.001454 | Validation Loss: 0.001531 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 40 | Train Loss: 0.001430 | Validation Loss: 0.001410 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 41 | Train Loss: 0.001422 | Validation Loss: 0.001429 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 42 | Train Loss: 0.001397 | Validation Loss: 0.001444 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 43 | Train Loss: 0.001402 | Validation Loss: 0.001545 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 44 | Train Loss: 0.001416 | Validation Loss: 0.001419 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 45 | Train Loss: 0.001383 | Validation Loss: 0.001392 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 46 | Train Loss: 0.001348 | Validation Loss: 0.001494 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 47 | Train Loss: 0.001379 | Validation Loss: 0.001356 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 48 | Train Loss: 0.001340 | Validation Loss: 0.001384 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 49 | Train Loss: 0.001325 | Validation Loss: 0.001374 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 50 | Train Loss: 0.001352 | Validation Loss: 0.001396 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 51 | Train Loss: 0.001309 | Validation Loss: 0.001390 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 52 | Train Loss: 0.001314 | Validation Loss: 0.001431 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 53 | Train Loss: 0.001368 | Validation Loss: 0.001525 | LR: 1.00e-03 | Time: 0.20mins
+Epoch 54 | Train Loss: 0.001219 | Validation Loss: 0.001275 | LR: 5.00e-04 | Time: 0.20mins
+Epoch 55 | Train Loss: 0.001207 | Validation Loss: 0.001273 | LR: 5.00e-04 | Time: 0.20mins
+Epoch 56 | Train Loss: 0.001201 | Validation Loss: 0.001281 | LR: 5.00e-04 | Time: 0.20mins
+Epoch 57 | Train Loss: 0.001193 | Validation Loss: 0.001241 | LR: 5.00e-04 | Time: 0.20mins
+Epoch 58 | Train Loss: 0.001182 | Validation Loss: 0.001243 | LR: 5.00e-04 | Time: 0.20mins
+Epoch 59 | Train Loss: 0.001177 | Validation Loss: 0.001264 | LR: 5.00e-04 | Time: 0.20mins
+Epoch 60 | Train Loss: 0.001170 | Validation Loss: 0.001245 | LR: 5.00e-04 | Time: 0.20mins
+Epoch 61 | Train Loss: 0.001165 | Validation Loss: 0.001254 | LR: 5.00e-04 | Time: 0.20mins
+Epoch 62 | Train Loss: 0.001161 | Validation Loss: 0.001256 | LR: 5.00e-04 | Time: 0.20mins
+Epoch 63 | Train Loss: 0.001169 | Validation Loss: 0.001257 | LR: 5.00e-04 | Time: 0.20mins
+Epoch 64 | Train Loss: 0.001121 | Validation Loss: 0.001220 | LR: 2.50e-04 | Time: 0.20mins
+Epoch 65 | Train Loss: 0.001111 | Validation Loss: 0.001212 | LR: 2.50e-04 | Time: 0.20mins
+Epoch 66 | Train Loss: 0.001106 | Validation Loss: 0.001216 | LR: 2.50e-04 | Time: 0.20mins
+Epoch 67 | Train Loss: 0.001107 | Validation Loss: 0.001215 | LR: 2.50e-04 | Time: 0.20mins
+Epoch 68 | Train Loss: 0.001104 | Validation Loss: 0.001235 | LR: 2.50e-04 | Time: 0.20mins
+Epoch 69 | Train Loss: 0.001100 | Validation Loss: 0.001222 | LR: 2.50e-04 | Time: 0.20mins
+Epoch 70 | Train Loss: 0.001098 | Validation Loss: 0.001183 | LR: 2.50e-04 | Time: 0.20mins
+Epoch 71 | Train Loss: 0.001095 | Validation Loss: 0.001213 | LR: 2.50e-04 | Time: 0.20mins
+Epoch 72 | Train Loss: 0.001088 | Validation Loss: 0.001199 | LR: 2.50e-04 | Time: 0.20mins
+Epoch 73 | Train Loss: 0.001084 | Validation Loss: 0.001225 | LR: 2.50e-04 | Time: 0.20mins
+Epoch 74 | Train Loss: 0.001078 | Validation Loss: 0.001249 | LR: 2.50e-04 | Time: 0.20mins
+Epoch 75 | Train Loss: 0.001078 | Validation Loss: 0.001216 | LR: 2.50e-04 | Time: 0.20mins
+Epoch 76 | Train Loss: 0.001072 | Validation Loss: 0.001219 | LR: 2.50e-04 | Time: 0.20mins
+Epoch 77 | Train Loss: 0.001051 | Validation Loss: 0.001200 | LR: 1.25e-04 | Time: 0.20mins
+Epoch 78 | Train Loss: 0.001043 | Validation Loss: 0.001203 | LR: 1.25e-04 | Time: 0.20mins
+Epoch 79 | Train Loss: 0.001039 | Validation Loss: 0.001196 | LR: 1.25e-04 | Time: 0.20mins
+Epoch 80 | Train Loss: 0.001036 | Validation Loss: 0.001197 | LR: 1.25e-04 | Time: 0.20mins
+Epoch 81 | Train Loss: 0.001031 | Validation Loss: 0.001219 | LR: 1.25e-04 | Time: 0.20mins
+Epoch 82 | Train Loss: 0.001035 | Validation Loss: 0.001198 | LR: 1.25e-04 | Time: 0.20mins
+Epoch 83 | Train Loss: 0.001021 | Validation Loss: 0.001213 | LR: 6.25e-05 | Time: 0.20mins
+Epoch 84 | Train Loss: 0.001015 | Validation Loss: 0.001198 | LR: 6.25e-05 | Time: 0.20mins
+Epoch 85 | Train Loss: 0.001014 | Validation Loss: 0.001215 | LR: 6.25e-05 | Time: 0.20mins
+Epoch 86 | Train Loss: 0.001014 | Validation Loss: 0.001202 | LR: 6.25e-05 | Time: 0.20mins
+Epoch 87 | Train Loss: 0.001012 | Validation Loss: 0.001204 | LR: 6.25e-05 | Time: 0.20mins
+Epoch 88 | Train Loss: 0.001010 | Validation Loss: 0.001217 | LR: 6.25e-05 | Time: 0.20mins
+Epoch 89 | Train Loss: 0.001003 | Validation Loss: 0.001212 | LR: 3.13e-05 | Time: 0.20mins
+Epoch 90 | Train Loss: 0.001001 | Validation Loss: 0.001216 | LR: 3.13e-05 | Time: 0.20mins
+Early stopping triggered at epoch 90. Best was epoch 70 with val loss 0.001183.
+Best: 0.0011825276837360275
