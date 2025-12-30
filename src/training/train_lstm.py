@@ -74,7 +74,7 @@ def train_one(cfg: dict):
     if device.type == "cuda":
         print("GPU:", torch.cuda.get_device_name(0))
 
-    ds = TrajectoryDataset(DATA_DIR / "flight_data.pt")
+    ds = TrajectoryDataset(str(DATA_DIR / "flight_data.pt"))
 
     g = torch.Generator().manual_seed(cfg.get("seed", 0))
     n = len(ds)
@@ -179,9 +179,9 @@ def train_one(cfg: dict):
 
 def run_sweep():
     cfg = {
-        "name": "h200_l4_d0",
-        "hidden_size": 200,
-        "num_layers": 4,
+        "name": "h410_l2_d0",
+        "hidden_size": 410,
+        "num_layers": 2,
         "dropout": 0,
         "lr": 1e-3,
         "wd": 1e-4,
