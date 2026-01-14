@@ -678,3 +678,35 @@ Epoch 119 | Train Loss: 0.000624 | Validation Loss: 0.000964 | LR: 1.56e-05 | Ti
 Epoch 120 | Train Loss: 0.000624 | Validation Loss: 0.000969 | LR: 1.56e-05 | Time: 0.52mins
 Early stopping triggered at epoch 120. Best was epoch 100 with val loss 0.000950.
 Best: 0.0009498494684756283
+
+
+Starting mlp_h128
+Using device: cpu
+Epoch 01 | Train Loss: 0.001971 | Validation Loss: 0.001689 | LR: 1.00e-03 | Time: 1.99mins
+Epoch 02 | Train Loss: 0.001676 | Validation Loss: 0.001637 | LR: 1.00e-03 | Time: 1.88mins
+Epoch 03 | Train Loss: 0.001640 | Validation Loss: 0.001640 | LR: 1.00e-03 | Time: 1.85mins
+Epoch 04 | Train Loss: 0.001619 | Validation Loss: 0.001575 | LR: 1.00e-03 | Time: 1.85mins
+Epoch 05 | Train Loss: 0.001605 | Validation Loss: 0.001550 | LR: 1.00e-03 | Time: 1.85mins
+Epoch 06 | Train Loss: 0.001596 | Validation Loss: 0.001525 | LR: 1.00e-03 | Time: 1.86mins
+Epoch 07 | Train Loss: 0.001587 | Validation Loss: 0.001554 | LR: 1.00e-03 | Time: 1.85mins
+Epoch 08 | Train Loss: 0.001587 | Validation Loss: 0.001510 | LR: 1.00e-03 | Time: 1.84mins
+Epoch 09 | Train Loss: 0.001580 | Validation Loss: 0.001599 | LR: 1.00e-03 | Time: 1.83mins
+Epoch 10 | Train Loss: 0.001573 | Validation Loss: 0.001529 | LR: 1.00e-03 | Time: 1.85mins
+Epoch 11 | Train Loss: 0.001568 | Validation Loss: 0.001526 | LR: 1.00e-03 | Time: 1.84mins
+Epoch 12 | Train Loss: 0.001566 | Validation Loss: 0.001533 | LR: 1.00e-03 | Time: 1.84mins
+
+Starting mlp_h256
+Using device: cpu
+Epoch 01 | Train Loss: 0.001883 | Validation Loss: 0.001598 | LR: 1.00e-03 | Time: 1.97mins
+Epoch 02 | Train Loss: 0.001675 | Validation Loss: 0.001593 | LR: 1.00e-03 | Time: 2.04mins
+Epoch 03 | Train Loss: 0.001644 | Validation Loss: 0.001584 | LR: 1.00e-03 | Time: 2.10mins
+Epoch 04 | Train Loss: 0.001626 | Validation Loss: 0.001575 | LR: 1.00e-03 | Time: 2.10mins
+Epoch 05 | Train Loss: 0.001615 | Validation Loss: 0.001910 | LR: 1.00e-03 | Time: 2.10mins
+Epoch 06 | Train Loss: 0.001606 | Validation Loss: 0.001537 | LR: 1.00e-03 | Time: 2.06mins
+Epoch 07 | Train Loss: 0.001600 | Validation Loss: 0.001518 | LR: 1.00e-03 | Time: 2.08mins
+Epoch 08 | Train Loss: 0.001596 | Validation Loss: 0.001560 | LR: 1.00e-03 | Time: 2.05mins
+Epoch 09 | Train Loss: 0.001591 | Validation Loss: 0.001556 | LR: 1.00e-03 | Time: 2.08mins
+Epoch 10 | Train Loss: 0.001586 | Validation Loss: 0.001520 | LR: 1.00e-03 | Time: 2.07mins
+Epoch 11 | Train Loss: 0.001582 | Validation Loss: 0.001675 | LR: 1.00e-03 | Time: 2.07mins
+Epoch 12 | Train Loss: 0.001578 | Validation Loss: 0.001557 | LR: 1.00e-03 | Time: 2.07mins
+Epoch 13 | Train Loss: 0.001577 | Validation Loss: 0.001944 | LR: 1.00e-03 | Time: 2.09mins
