@@ -40,25 +40,42 @@ def collate_padded(batch):
     return x_pad, y_pad, mask, lengths
 
 
+class LockedDropout(nn.Module):
+    def __init__(self, p: float):
+        super().__init__()
+        self.p = p
+
+    def forward(self, x):
+        if (not self.training) or self.p == 0.0:
+            return x
+        # x: [B, T, F]
+        mask = x.new_empty(x.size(0), 1, x.size(2)).bernoulli_(1 - self.p)
+        mask = mask / (1 - self.p)
+        return x * mask
+
 class NextStepLSTM(nn.Module):
     def __init__(self, input_size=5, hidden_size=128, num_layers=2, dropout=0.1):
         super().__init__()
+        self.in_drop = LockedDropout(dropout)
+        self.out_drop = LockedDropout(dropout)
+
         self.lstm = nn.LSTM(
             input_size=input_size,
             hidden_size=hidden_size,
             num_layers=num_layers,
-            dropout=dropout if num_layers > 1 else 0.0,
+            dropout=0.0,
             batch_first=True,
         )
         self.head = nn.Linear(hidden_size, input_size)
 
     def forward(self, x, lengths, h=None):
-        # lengths must be on CPU for pack_padded_sequence
+        x = self.in_drop(x)
         packed = pack_padded_sequence(x, lengths.cpu(), batch_first=True, enforce_sorted=False)
         packed_out, h = self.lstm(packed, h)
         out, _ = pad_packed_sequence(packed_out, batch_first=True)
-        pred = self.head(out)
-        return pred, h
+        out = self.out_drop(out)
+        return self.head(out), h
+
 
 
 def masked_mse(pred, target, mask):
@@ -179,10 +196,10 @@ def train_one(cfg: dict):
 
 def run_sweep():
     cfg = {
-        "name": "h410_l2_d0",
-        "hidden_size": 410,
+        "name": "h600_l2_d0.1",
+        "hidden_size": 600,
         "num_layers": 2,
-        "dropout": 0,
+        "dropout": .1,
         "lr": 1e-3,
         "wd": 1e-4,
         "batch_size": 64,
