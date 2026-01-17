@@ -4,12 +4,14 @@ import matplotlib.pyplot as plt
 
 DB_PATH = "C:\\Projekte\\radar-simulation-validator\\RadarSimulationValidator\\backup-31.12.2025.db"
 
-# Raster-Auflösung (je höher, desto feiner, desto mehr RAM/CPU)
-BINS = 800  # z.B. 400..2000 je nach Daten/Performance
 
 CHUNK = 500_000
+WHERE = "WHERE Status = 1"  # e.g. 'WHERE Status = 1'
 
-WHERE = "WHERE Status = 1"  # z.B. 'WHERE Status = 1'
+# Plot tuning
+POINT_SIZE = 1     # smaller = faster/cleaner for huge point clouds
+ALPHA = 1         # transparency helps show density
+DOWNSAMPLE = None    # e.g. set to 200_000 to cap points per chunk, or None for all
 
 def iter_rows(conn, chunk=CHUNK):
     cur = conn.cursor()
@@ -44,55 +46,30 @@ def iter_rows(conn, chunk=CHUNK):
 
 conn = sqlite3.connect(DB_PATH)
 
-# First pass: Determine bounds
-xmin = ymin = np.inf
-xmax = ymax = -np.inf
+plt.figure(figsize=(10, 8))
+
+total_plotted = 0
 
 for data in iter_rows(conn):
     rho = data[:, 0]
-    theta = data[:, 1]
-
-    theta = np.deg2rad(theta)
-
-    x = rho * np.sin(theta)
-    y =  rho * np.cos(theta)
-
-    xmin = min(xmin, x.min())
-    xmax = max(xmax, x.max())
-    ymin = min(ymin, y.min())
-    ymax = max(ymax, y.max())
-
-# Second pass: Accumulate histogram
-H = np.zeros((BINS, BINS), dtype=np.uint64)
-
-x_edges = np.linspace(xmin, xmax, BINS + 1)
-y_edges = np.linspace(ymin, ymax, BINS + 1)
-
-for data in iter_rows(conn):
-    rho = data[:, 0]
-    theta = data[:, 1]
-    theta = np.deg2rad(theta)
+    theta = np.deg2rad(data[:, 1])
 
     x = rho * np.sin(theta)
     y = rho * np.cos(theta)
 
-    h, _, _ = np.histogram2d(x, y, bins=[x_edges, y_edges])
-    H += h.astype(np.uint64)
+    # Optional downsampling per chunk to keep plotting responsive
+    if DOWNSAMPLE is not None and x.size > DOWNSAMPLE:
+        idx = np.random.choice(x.size, size=DOWNSAMPLE, replace=False)
+        x = x[idx]
+        y = y[idx]
+
+    plt.scatter(x, y, s=POINT_SIZE, alpha=ALPHA, linewidths=0)
+    total_plotted += x.size
 
 conn.close()
 
-# Plot heatmap
-H_log = np.log1p(H)  # log(1 + count)
-
-plt.figure(figsize=(10, 8))
-plt.imshow(
-    H_log.T,
-    origin="lower",
-    extent=[xmin, xmax, ymin, ymax],
-    aspect="equal",
-)
-plt.colorbar(label="log(1 + count)")
-plt.title("Position Heatmap (binned density)")
+plt.gca().set_aspect("equal", adjustable="box")
+plt.title(f"All Positions (scatter) — plotted {total_plotted:,} points")
 plt.xlabel("x")
 plt.ylabel("y")
 plt.tight_layout()

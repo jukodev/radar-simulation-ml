@@ -12,6 +12,7 @@ dependencies = [
     "pytorch-triton-rocm",
     "fastapi-cli>=0.0.16",
     "matplotlib>=3.10.8",
+    "scipy>=1.17.0",
 ]
 
 
