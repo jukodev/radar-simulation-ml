@@ -1,3 +1,4 @@
+import time
 from fastapi import APIRouter, HTTPException, Request
 from typing import List, Annotated
 from src.api.models import FlightPoint
@@ -28,14 +29,28 @@ def generate_from_first(model, first_point, steps=200, device="cpu"):
 
     return torch.stack(out_seq, dim=0)
 
+
+@torch.inference_mode()
+def generate_from_first_mlp(model, first_point, steps=200, device="cpu"):
+    model.eval()
+    x_t = first_point.view(1, 5).to(device)
+    out_seq = [first_point.cpu()]
+    for _ in range(steps - 1):
+        next_point = model(x_t)          # [1,5]
+        out_seq.append(next_point.squeeze(0).cpu())
+        x_t = next_point                  # [1,5]
+
+    return torch.stack(out_seq, dim=0)
+
 @router.put("/arrivals", response_model=List[FlightPoint], tags=["arrivals"])
 def simulate_arrival(request: Request, flight_point: FlightPoint) -> List[FlightPoint]:
+
     try:
         logger.info(f"Simulating arrival for flight point: {flight_point}")
+
         model = request.app.state.model
         device = request.app.state.device
 
-        # Encode incoming point (adapt to your FlightPoint schema!)
         x, y, vx, vy, fl = custom_codecs.encode_flightpoint(
             flight_point.rho,
             flight_point.theta,
@@ -47,6 +62,43 @@ def simulate_arrival(request: Request, flight_point: FlightPoint) -> List[Flight
         current = torch.tensor([x, y, vx, vy, fl], dtype=torch.float32)
 
         seq = generate_from_first(model, current, steps=350, device=device)
+
+        simulated: List[FlightPoint] = []
+        for i in range(seq.shape[0]):
+            x1, y1, vx1, vy1, fl1 = seq[i].tolist()
+            rho, theta, speed, heading, fl_dec = custom_codecs.decode_flightpoint(x1, y1, vx1, vy1, fl1)
+
+            simulated.append(FlightPoint(
+                rho=rho,
+                theta=theta,
+                speed=speed,
+                heading=heading,
+                fl=fl_dec
+            ))
+        return simulated
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+@router.put("/arrivals_mlp", response_model=List[FlightPoint], tags=["arrivals"])
+def simulate_arrival_mlp(request: Request, flight_point: FlightPoint) -> List[
+    FlightPoint]:
+    try:
+        logger.info(f"Simulating arrival (MLP) for flight point: {flight_point}")
+        model = request.app.state.nn_model
+        device = request.app.state.device
+
+        x, y, vx, vy, fl = custom_codecs.encode_flightpoint(
+            flight_point.rho,
+            flight_point.theta,
+            flight_point.speed,
+            flight_point.heading,
+            flight_point.fl,
+        )
+
+        current = torch.tensor([x, y, vx, vy, fl], dtype=torch.float32)
+
+        seq = generate_from_first_mlp(model, current, steps=350, device=device)
 
         # Decode outputs to FlightPoint list
         simulated: List[FlightPoint] = []

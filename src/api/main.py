@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from src.api.inference.model_store import load_model
+from src.api.inference.model_store import load_model, load_nn_model
 from .router import router
 import torch
 
@@ -12,6 +12,7 @@ async def lifespan(app: FastAPI):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     app.state.device = device
     app.state.model = load_model(device)
+    app.state.nn_model = load_nn_model(device)
 
     yield
 
