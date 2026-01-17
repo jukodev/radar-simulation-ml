@@ -22,7 +22,7 @@ import custom_codecs
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
 
-DB_PATH = DATA_DIR / "backup-17.12.2025.db"
+DB_PATH = DATA_DIR / "backup-31.12.2025.db"
 SAVE_PATH = DATA_DIR / "flight_data.pt"
 MIN_POINTS_PER_TRAJ = 50           
 
