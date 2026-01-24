@@ -1,4 +1,5 @@
 import sqlite3
+from zipfile import Path
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -10,6 +11,9 @@ BINS = 800  # z.B. 400..2000 je nach Daten/Performance
 CHUNK = 500_000
 
 WHERE = "WHERE Status = 1"  # z.B. 'WHERE Status = 1'
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent 
+OUTPUT_DIR = PROJECT_ROOT / "analysis_out"
+
 
 def iter_rows(conn, chunk=CHUNK):
     cur = conn.cursor()
@@ -90,10 +94,12 @@ plt.imshow(
     origin="lower",
     extent=[xmin, xmax, ymin, ymax],
     aspect="equal",
+    cmap="inferno"
 )
 plt.colorbar(label="log(1 + count)")
-plt.title("Position Heatmap (binned density)")
-plt.xlabel("x")
-plt.ylabel("y")
+plt.title("Position Density Heatmap (Cleaned Data)")
+plt.xlabel("x (East)")
+plt.ylabel("y (North)")
 plt.tight_layout()
+plt.savefig(OUTPUT_DIR / "position_heatmap_clean.png", dpi=200)
 plt.show()

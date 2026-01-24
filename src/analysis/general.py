@@ -291,6 +291,7 @@ def plot_position_density_and_mean_alt(con: sqlite3.Connection, out_dir: str):
         origin="lower",
         extent=[xmin, xmax, ymin, ymax],
         aspect="equal",
+        cmap="inferno"
     )
     plt.colorbar(label="log(1 + count)")
     plt.title("Position Density Heatmap")
@@ -300,28 +301,7 @@ def plot_position_density_and_mean_alt(con: sqlite3.Connection, out_dir: str):
     plt.savefig(os.path.join(out_dir, "pos_density_heatmap.png"), dpi=160)
     plt.close()
 
-    # Mean altitude plot
-    mean_alt = np.full_like(sum_alt, np.nan, dtype=np.float64)
-    mask = cnt_alt >= MIN_COUNT_PER_BIN_MEAN_ALT
-    mean_alt[mask] = sum_alt[mask] / cnt_alt[mask]
-
-    plt.figure(figsize=(10, 8))
-    plt.imshow(
-        mean_alt.T,
-        origin="lower",
-        extent=[xmin, xmax, ymin, ymax],
-        aspect="equal",
-    )
-    plt.colorbar(label="Mean FlightLevelFeet (ft)")
-    plt.title(f"Mean Altitude per Position (min {MIN_COUNT_PER_BIN_MEAN_ALT} samples/bin)")
-    plt.xlabel("x (East)")
-    plt.ylabel("y (North)")
-    plt.tight_layout()
-    plt.savefig(os.path.join(out_dir, "pos_mean_altitude.png"), dpi=160)
-    plt.close()
-
     print(f"Saved: {os.path.join(out_dir, 'pos_density_heatmap.png')}")
-    print(f"Saved: {os.path.join(out_dir, 'pos_mean_altitude.png')}")
 
 
 def plot_time_deltas(con: sqlite3.Connection, out_dir: str):
@@ -385,10 +365,10 @@ def plot_time_deltas(con: sqlite3.Connection, out_dir: str):
         plt.yscale("log")
     plt.xlabel("Δt (seconds)")
     plt.ylabel("Count")
-    plt.title(f"Δt Histogram per AircraftAddress (dt>0: {total_pos:,}, dt<=0: {nonpos:,})")
+    plt.title(f"Δt Histogram per AircraftAddress")
     plt.tight_layout()
     path = os.path.join(out_dir, "time_delta_hist_seconds.png")
-    plt.savefig(path, dpi=160)
+    plt.savefig(path, dpi=200)
     plt.close()
 
     print(f"Saved: {path}")
