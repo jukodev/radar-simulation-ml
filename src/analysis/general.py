@@ -1,47 +1,33 @@
-#!/usr/bin/env python3
 import os
 import math
 import sqlite3
 import numpy as np
 import matplotlib.pyplot as plt
 
-# =========================
-# CONFIG
-# =========================
 DB_PATH = "C:\\Projekte\\radar-simulation-validator\\RadarSimulationValidator\\backup-31.12.2025.db"
 
 OUT_DIR = "analysis_out"
 
 CHUNK_ROWS = 500_000
 
-# Heatmaps
 BINS_POS = 800
 MIN_COUNT_PER_BIN_MEAN_ALT = 10
 
-# Time delta histogram (seconds) bins: 1s .. 2h
 DT_BINS_S = np.logspace(0, np.log10(7200), 220)
 
-# Sampling for percentiles (approx): keep about ~SAMPLE_TARGET rows using Id%step==0
 SAMPLE_TARGET = 1_000_000
 
-# Angle convention
 THETA_IS_DEGREES = True
 
-# If you want to filter, add SQL here (keep leading space).
-# Example: FILTER_SQL = " AND Status = 1"
 FILTER_SQL = ""
 
 
-# =========================
-# HELPERS
-# =========================
 def ensure_out_dir(path: str) -> None:
     os.makedirs(path, exist_ok=True)
 
 
 def connect(db_path: str) -> sqlite3.Connection:
     con = sqlite3.connect(db_path)
-    # Some pragmas for read-heavy workloads
     con.execute("PRAGMA journal_mode=OFF;")
     con.execute("PRAGMA synchronous=OFF;")
     con.execute("PRAGMA temp_store=MEMORY;")
@@ -80,7 +66,6 @@ def iter_id_ranges(con: sqlite3.Connection, chunk: int):
 
 
 def iter_rows_positions_alt(con: sqlite3.Connection, chunk: int):
-    # Stream PositionRho, PositionTheta, FlightLevelFeet
     for start, end in iter_id_ranges(con, chunk):
         sql = f"""
             SELECT PositionRho, PositionTheta, FlightLevelFeet
@@ -93,7 +78,6 @@ def iter_rows_positions_alt(con: sqlite3.Connection, chunk: int):
 
 
 def iter_rows_speeds_headings_fls(con: sqlite3.Connection, chunk: int):
-    # Stream VelocitySpeed, VelocityHeading, FlightLevelFeet
     for start, end in iter_id_ranges(con, chunk):
         sql = f"""
             SELECT VelocitySpeed, VelocityHeading, FlightLevelFeet
@@ -120,16 +104,12 @@ def print_section(title: str):
     print("=" * 80)
 
 
-# =========================
-# OVERVIEW / PRINT STATS
-# =========================
 def print_overview(con: sqlite3.Connection):
     print_section("BASIC OVERVIEW")
 
     total = fetch_one(con, f"SELECT COUNT(*) FROM AsterixPackets WHERE 1=1 {FILTER_SQL}")[0]
     print(f"Rows: {total:,}")
 
-    # Time range (ISO string + julianday as numeric)
     tmin, tmax = fetch_one(
         con,
         f"SELECT MIN(TimeOfDay), MAX(TimeOfDay) FROM AsterixPackets WHERE TimeOfDay IS NOT NULL {FILTER_SQL}",
@@ -204,7 +184,6 @@ def print_percentiles_from_sample(con: sqlite3.Connection):
     step = approx_sample_step(con, SAMPLE_TARGET)
     print(f"Sampling step: Id % {step} == 0 (approx target {SAMPLE_TARGET:,})")
 
-    # Sample numeric columns
     sql = f"""
         SELECT VelocitySpeed, FlightLevelFeet
         FROM AsterixPackets
@@ -226,13 +205,9 @@ def print_percentiles_from_sample(con: sqlite3.Connection):
         print(f"{name} percentiles [1,5,25,50,75,95,99]: {np.array2string(p, precision=3)}")
 
 
-# =========================
-# PLOTS
-# =========================
 def plot_position_density_and_mean_alt(con: sqlite3.Connection, out_dir: str):
     print_section("PLOT: POSITION DENSITY HEATMAP + MEAN ALTITUDE MAP")
 
-    # Pass 1: bounds
     xmin = ymin = np.inf
     xmax = ymax = -np.inf
 
@@ -255,7 +230,6 @@ def plot_position_density_and_mean_alt(con: sqlite3.Connection, out_dir: str):
     x_edges = np.linspace(xmin, xmax, BINS_POS + 1)
     y_edges = np.linspace(ymin, ymax, BINS_POS + 1)
 
-    # Accumulators
     density = np.zeros((BINS_POS, BINS_POS), dtype=np.uint64)
     sum_alt = np.zeros((BINS_POS, BINS_POS), dtype=np.float64)
     cnt_alt = np.zeros((BINS_POS, BINS_POS), dtype=np.uint32)
@@ -307,7 +281,7 @@ def plot_position_density_and_mean_alt(con: sqlite3.Connection, out_dir: str):
 def plot_time_deltas(con: sqlite3.Connection, out_dir: str):
     print_section("PLOT: TIME DELTA HISTOGRAM (per AircraftAddress, seconds)")
 
-    # Δt per AircraftAddress. If you prefer global: remove PARTITION BY.
+    # Δt per AircraftAddress
     query = f"""
     WITH t AS (
       SELECT
@@ -377,8 +351,6 @@ def plot_time_deltas(con: sqlite3.Connection, out_dir: str):
 def plot_speed_heading_flightlevel(con: sqlite3.Connection, out_dir: str):
     print_section("PLOT: SPEED / HEADING / FLIGHTLEVEL DISTRIBUTIONS")
 
-    # Accumulate histograms chunkwise (avoid holding 14M values)
-    # Choose reasonable ranges; you can adjust if your data differs.
     speed_bins = np.linspace(0, 400, 200)      # units depend on your data
     fl_bins = np.linspace(0, 50000, 200)       # feet
     hdg_bins = np.linspace(0, 360, 361)        # degrees 0..360
@@ -396,7 +368,6 @@ def plot_speed_heading_flightlevel(con: sqlite3.Connection, out_dir: str):
         heading = heading[np.isfinite(heading)]
         fl = fl[np.isfinite(fl)]
 
-        # Normalize heading into [0, 360)
         if heading.size:
             heading = np.mod(heading, 360.0)
 
@@ -432,8 +403,7 @@ def plot_speed_heading_flightlevel(con: sqlite3.Connection, out_dir: str):
     plt.close()
     print(f"Saved: {path}")
 
-    # Heading polar "rose"
-    # Use bin centers in radians, weights are counts
+    # Heading polar "rose" plot
     centers_deg = 0.5 * (hdg_bins[:-1] + hdg_bins[1:])
     centers_rad = np.deg2rad(centers_deg)
     widths = np.deg2rad(np.diff(hdg_bins))
@@ -450,10 +420,6 @@ def plot_speed_heading_flightlevel(con: sqlite3.Connection, out_dir: str):
     plt.close(fig)
     print(f"Saved: {path}")
 
-
-# =========================
-# MAIN
-# =========================
 def main():
     ensure_out_dir(OUT_DIR)
     con = connect(DB_PATH)

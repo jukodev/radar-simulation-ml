@@ -9,6 +9,8 @@ For my bachelor thesis.
 ├── data/                   # Training data (.pt files)
 ├── models/                 # Saved model weights
 ├── src/
+│   └── api/                # FastAPI REST Server for inference
+│   └── analysis/           # Visual Model analysis
 │   ├── tools/              # Utilities (codecs, data processing)
 │   ├── training/           # Model training scripts
 │   └── evaluation/         # Model evaluation scripts
@@ -65,11 +67,11 @@ uv run python src/validation/test_normalized.py
 
 Each flight point consists of 5 features (z-score normalized):
 
--   `x`, `y` - Cartesian position (from polar rho/theta)
--   `vx`, `vy` - Velocity components (from speed/heading)
--   `fl` - Flight level
+- `x`, `y` - Cartesian position (from polar rho/theta)
+- `vx`, `vy` - Velocity components (from speed/heading)
+- `fl` - Flight level
 
 ## Models
 
--   **NextStepLSTM**: Recurrent model for trajectory prediction
--   **MovementPredictor**: Feedforward NN for single-step prediction
+- **NextStepLSTM**: Recurrent model for trajectory prediction
+- **MovementPredictor**: Feedforward NN for single-step prediction

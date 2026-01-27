@@ -29,7 +29,6 @@ OUTPUT_DIR = PROJECT_ROOT / "analysis_out"
 # Database path - adjust as needed
 DB_PATH = DATA_DIR / "backup-31.12.2025.db"
 
-# Model configuration (adjust to match your trained model)
 MODEL_CONFIG = {
     "hidden_size": 600,
     "num_layers": 2,
@@ -37,10 +36,9 @@ MODEL_CONFIG = {
 }
 MODEL_PATH = MODELS_DIR / "nextstep_h600_l2_d0_best.pt"
 
-# Analysis parameters
 NUM_PREDICTIONS = 1000
-PREDICTION_STEPS = 200  # Number of steps to predict for each trajectory
-BINS = 1000  # Heatmap resolution
+PREDICTION_STEPS = 200  
+BINS = 1000  
 
 
 @torch.no_grad()

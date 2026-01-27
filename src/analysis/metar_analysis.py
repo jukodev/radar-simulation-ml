@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 METAR Weather Report Analysis
 Visualizes weather condition statistics from METAR reports.
@@ -10,12 +9,8 @@ import numpy as np
 from matplotlib.patches import FancyBboxPatch
 import matplotlib.patheffects as pe
 
-# =========================
-# CONFIG
-# =========================
 OUT_DIR = "analysis_out"
 
-# Set beautiful style
 plt.style.use('seaborn-v0_8-whitegrid')
 plt.rcParams['axes.spines.top'] = False
 plt.rcParams['axes.spines.right'] = False
@@ -29,22 +24,17 @@ DATA = {
     "CAVOK": 628,
 }
 
-# Beautiful color palette
 COLORS = {
-    'visibility': '#FF6B6B',      # Coral red
-    'ceiling': '#FFA94D',         # Orange
-    'both': '#CC5DE8',            # Purple
-    'cavok': '#51CF66',           # Green
-    'other': '#74C0FC',           # Light blue
-    'background': '#FFF',      # Light gray
-    'text': '#343A40',            # Dark gray
-    'accent': '#495057',          # Medium gray
+    'visibility': '#FF6B6B',    
+    'ceiling': '#FFA94D',     
+    'both': '#CC5DE8',   
+    'cavok': '#51CF66',       
+    'other': '#74C0FC',       
+    'background': '#FFF',   
+    'text': '#343A40',       
+    'accent': '#495057',         
 }
 
-
-# =========================
-# HELPERS
-# =========================
 def ensure_out_dir(path: str) -> None:
     os.makedirs(path, exist_ok=True)
 
@@ -81,9 +71,6 @@ def add_value_labels(ax, bars, values, total, offset=8):
         )
 
 
-# =========================
-# PLOTS
-# =========================
 def plot_metar_bar_chart(out_dir: str):
     """Create a beautiful bar chart showing METAR weather condition counts."""
     print_section("PLOT: METAR WEATHER CONDITIONS BAR CHART")
@@ -96,38 +83,32 @@ def plot_metar_bar_chart(out_dir: str):
     fig, ax = plt.subplots(figsize=(12, 8), facecolor=COLORS['background'])
     ax.set_facecolor(COLORS['background'])
     
-    # Create bars with rounded corners effect
+ 
     bars = ax.bar(categories, values, color=colors, width=0.65,
                   edgecolor='white', linewidth=2, zorder=3)
     
-    # Add gradient-like effect with slight transparency
     for bar, color in zip(bars, colors):
         bar.set_alpha(0.9)
     
     add_value_labels(ax, bars, values, TOTAL_REPORTS)
     
-    # Styling
     ax.set_ylabel('Number of Reports', fontsize=13, fontweight='medium', 
                   color=COLORS['text'], labelpad=10)
     ax.set_xlabel('Weather Condition', fontsize=13, fontweight='medium', 
                   color=COLORS['text'], labelpad=10)
     
-    # Title with subtitle
     ax.set_title('METAR Weather Report Analysis', fontsize=18, fontweight='bold', 
                  color=COLORS['text'], pad=25)
     ax.text(0.5, 1.02, f'Total Reports: {TOTAL_REPORTS:,}', transform=ax.transAxes,
             ha='center', fontsize=12, color=COLORS['accent'], style='italic')
     
-    # Grid styling
     ax.yaxis.grid(True, linestyle='-', alpha=0.3, color='gray', zorder=0)
     ax.xaxis.grid(False)
     ax.set_axisbelow(True)
     
-    # Tick styling
     ax.tick_params(axis='both', labelsize=11, colors=COLORS['text'])
     ax.set_ylim(0, max(values) * 1.25)
     
-    # Remove top and right spines
     ax.spines['left'].set_color(COLORS['accent'])
     ax.spines['bottom'].set_color(COLORS['accent'])
     ax.spines['left'].set_linewidth(1.5)
@@ -145,7 +126,6 @@ def plot_metar_donut_chart(out_dir: str):
     """Create a beautiful donut chart showing METAR weather condition distribution."""
     print_section("PLOT: METAR WEATHER CONDITIONS DONUT CHART")
     
-    # Non-overlapping categories
     vis_only = DATA["Visibility < 1000m"] - DATA["Visibility < 1000m &\nCeiling < 100ft"]
     ceil_only = DATA["Ceiling < 100ft"] - DATA["Visibility < 1000m &\nCeiling < 100ft"]
     both = DATA["Visibility < 1000m &\nCeiling < 100ft"]
@@ -160,7 +140,6 @@ def plot_metar_donut_chart(out_dir: str):
     fig, ax = plt.subplots(figsize=(11, 11), facecolor=COLORS['background'])
     ax.set_facecolor(COLORS['background'])
     
-    # Create donut chart
     wedges, texts, autotexts = ax.pie(
         sizes, 
         labels=None,
@@ -171,17 +150,14 @@ def plot_metar_donut_chart(out_dir: str):
         wedgeprops={'width': 0.5, 'edgecolor': 'white', 'linewidth': 3}
     )
     
-    # Add center circle for donut effect
     centre_circle = plt.Circle((0, 0), 0.35, fc=COLORS['background'])
     ax.add_artist(centre_circle)
     
-    # Add center text
     ax.text(0, 0.08, f'{TOTAL_REPORTS:,}', ha='center', va='center',
             fontsize=32, fontweight='bold', color=COLORS['text'])
     ax.text(0, -0.12, 'Total Reports', ha='center', va='center',
             fontsize=14, color=COLORS['accent'])
     
-    # Create beautiful legend
     legend_labels = [f'{label}\n{size:,} ({size/TOTAL_REPORTS*100:.1f}%)' 
                      for label, size in zip(labels, sizes)]
     
@@ -208,10 +184,8 @@ def plot_metar_summary(out_dir: str):
     
     fig = plt.figure(figsize=(16, 9), facecolor=COLORS['background'])
     
-    # Create grid layout
     gs = fig.add_gridspec(2, 3, height_ratios=[1, 0.6], hspace=0.35, wspace=0.3)
     
-    # === Top Left: Bar chart ===
     ax1 = fig.add_subplot(gs[0, :2])
     ax1.set_facecolor(COLORS['background'])
     
@@ -239,7 +213,6 @@ def plot_metar_summary(out_dir: str):
     ax1.spines['left'].set_color(COLORS['accent'])
     ax1.spines['bottom'].set_color(COLORS['accent'])
     
-    # === Top Right: Mini donut ===
     ax2 = fig.add_subplot(gs[0, 2])
     ax2.set_facecolor(COLORS['background'])
     
@@ -267,7 +240,6 @@ def plot_metar_summary(out_dir: str):
     ax2.set_title('Overall Distribution', fontsize=14, fontweight='bold', 
                   color=COLORS['text'], pad=15)
     
-    # === Bottom: Stacked horizontal bar ===
     ax3 = fig.add_subplot(gs[1, :])
     ax3.set_facecolor(COLORS['background'])
     
@@ -304,7 +276,6 @@ def plot_metar_summary(out_dir: str):
     ax3.spines['left'].set_visible(False)
     ax3.spines['bottom'].set_color(COLORS['accent'])
     
-    # Main title
     fig.suptitle('METAR Weather Report Analysis', fontsize=22, fontweight='bold', 
                  color=COLORS['text'], y=0.98)
     
@@ -329,7 +300,6 @@ def print_statistics():
         condition_clean = condition.replace('\n', ' ')
         print(f"  {condition_clean}: {count:,} ({percentage:.2f}%)")
     
-    # Calculate other
     vis_only = DATA["Visibility < 1000m"] - DATA["Visibility < 1000m &\nCeiling < 100ft"]
     ceil_only = DATA["Ceiling < 100ft"] - DATA["Visibility < 1000m &\nCeiling < 100ft"]
     both = DATA["Visibility < 1000m &\nCeiling < 100ft"]
@@ -344,9 +314,6 @@ def print_statistics():
     print(f"  Other Conditions: {other}")
 
 
-# =========================
-# MAIN
-# =========================
 def main():
     ensure_out_dir(OUT_DIR)
     

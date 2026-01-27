@@ -1,16 +1,16 @@
+from pathlib import Path
 import sqlite3
-from zipfile import Path
 import numpy as np
 import matplotlib.pyplot as plt
 
 DB_PATH = "C:\\Projekte\\radar-simulation-validator\\RadarSimulationValidator\\backup-31.12.2025.db"
 
-# Raster-Auflösung (je höher, desto feiner, desto mehr RAM/CPU)
-BINS = 800  # z.B. 400..2000 je nach Daten/Performance
+# Raster-Auflösung 
+BINS = 800
 
 CHUNK = 500_000
 
-WHERE = "WHERE Status = 1"  # z.B. 'WHERE Status = 1'
+WHERE = "WHERE Status = 1" # Filter for cleaned data
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent 
 OUTPUT_DIR = PROJECT_ROOT / "analysis_out"
 
